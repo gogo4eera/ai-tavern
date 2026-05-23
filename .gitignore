@@ -1,0 +1,66 @@
+# Local Folders (Ignored in Git, kept for local workspace and AI drafting/experimentation)
+/content/
+/experiments/
+/knowledge/
+/.agents/
+
+# Secrets and Environment Variables
+.env
+.env.*
+!.env.example
+
+# macOS specific files
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+Thumbs.db
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+.venv
+venv
+ENV
+env/
+.pytest_cache/
+.tox/
+.coverage
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.log
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.ipynb_checkpoints
+
+# Node.js (Frontend)
+node_modules/
+/frontend/dist/
+/frontend/build/
+.npm
+.eslintcache
+/frontend/.next/
+/frontend/out/
