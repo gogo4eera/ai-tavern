@@ -1,6 +1,6 @@
 UV := $(shell which uv 2>/dev/null || echo "$(HOME)/.local/bin/uv")
 
-.PHONY: setup setup-backend setup-frontend lint format test dev-backend dev-frontend dev
+.PHONY: setup setup-backend setup-frontend lint lint-backend lint-frontend format format-backend format-frontend test test-backend test-frontend dev-backend dev-frontend dev
 
 setup: setup-backend setup-frontend
 
@@ -12,19 +12,37 @@ setup-frontend:
 	@echo "Setting up frontend..."
 	cd frontend && npm install
 
-lint:
+lint-backend:
 	@echo "Linting backend..."
 	cd backend && .venv/bin/ruff check app tests
 	cd backend && .venv/bin/ruff format --check app tests
 
-format:
+lint-frontend:
+	@echo "Linting frontend..."
+	cd frontend && npm run lint
+
+lint: lint-backend lint-frontend
+
+format-backend:
 	@echo "Formatting backend..."
 	cd backend && .venv/bin/ruff check --fix app tests
 	cd backend && .venv/bin/ruff format app tests
 
-test:
+format-frontend:
+	@echo "Formatting frontend..."
+	cd frontend && npm run format
+
+format: format-backend format-frontend
+
+test-backend:
 	@echo "Running backend tests..."
 	cd backend && .venv/bin/pytest tests
+
+test-frontend:
+	@echo "Running frontend tests..."
+	cd frontend && npm run test
+
+test: test-backend test-frontend
 
 dev-backend:
 	@echo "Starting backend..."

@@ -1,0 +1,417 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=Press+Start+2P&family=Outfit:wght@300;400;600&display=swap');
+
+:root {
+  --bg-dark: #0b0c10;
+  --bg-stone: #1f2128;
+  --wood-dark: #3e2723;
+  --wood-light: #5d4037;
+  --wood-border: #795548;
+  --gold-accent: #ffd700;
+  --gold-glow: rgba(255, 215, 0, 0.4);
+  --parchment-bg: #f7e7ce;
+  --parchment-text: #2d1a12;
+  --text-light: #e0e6ed;
+  --text-muted: #95a5a6;
+
+  font-family: 'Outfit', sans-serif;
+  color-scheme: dark;
+  background-color: var(--bg-dark);
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow-x: hidden;
+  background: radial-gradient(circle at center, #1b1e26 0%, #0b0c10 100%);
+}
+
+#root {
+  width: 100%;
+  max-width: 800px;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* Pixel Art Rendering Rule */
+.pixel-art {
+  image-rendering: -moz-crisp-edges;
+  image-rendering: -webkit-crisp-edges;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+/* Main Container Frame */
+.tavern-frame {
+  background-color: var(--bg-stone);
+  border: 10px solid var(--wood-dark);
+  box-shadow:
+    inset 0 0 20px rgba(0, 0, 0, 0.8),
+    0 15px 35px rgba(0, 0, 0, 0.6);
+  border-radius: 4px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Wooden Panel Divider */
+.tavern-divider {
+  height: 8px;
+  background: var(--wood-light);
+  border-top: 2px solid var(--wood-border);
+  border-bottom: 2px solid #000;
+  width: 100%;
+}
+
+/* Viewport Header */
+.tavern-header {
+  padding: 15px;
+  text-align: center;
+  background: linear-gradient(to bottom, #111318 0%, var(--bg-stone) 100%);
+  border-bottom: 4px solid var(--wood-dark);
+}
+
+.tavern-title {
+  margin: 0;
+  font-family: 'Cinzel', serif;
+  font-size: 2rem;
+  color: var(--gold-accent);
+  text-shadow: 0 0 10px var(--gold-glow);
+  letter-spacing: 2px;
+}
+
+.tavern-subtitle {
+  margin: 5px 0 0 0;
+  font-size: 0.85rem;
+  font-family: 'Outfit', sans-serif;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Viewport Upper Half - Tavern Scene */
+.tavern-viewport {
+  height: 280px;
+  background-color: #12131c;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  padding-bottom: 20px;
+  box-sizing: border-box;
+  background-image:
+    linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0)),
+    repeating-linear-gradient(0deg, #1c1e26 0px, #1c1e26 2px, transparent 2px, transparent 16px),
+    repeating-linear-gradient(90deg, #1c1e26 0px, #1c1e26 2px, transparent 2px, transparent 16px);
+  background-size:
+    100% 100%,
+    16px 16px,
+    16px 16px;
+}
+
+/* Sprite Container */
+.sprite-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Canvas styling */
+.npc-canvas {
+  width: 192px; /* 48 logical width * 4 scale factor */
+  height: 192px;
+  display: block;
+}
+
+/* Speech / Dialogue Bubble Above NPC */
+.speech-bubble {
+  position: absolute;
+  bottom: 200px;
+  background: var(--parchment-bg);
+  border: 4px solid var(--wood-dark);
+  border-radius: 8px;
+  padding: 12px 18px;
+  width: 250px;
+  color: var(--parchment-text);
+  font-size: 0.9rem;
+  font-weight: 600;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+  z-index: 10;
+  animation: floatBubble 3s ease-in-out infinite;
+}
+
+.speech-bubble::after {
+  content: '';
+  position: absolute;
+  bottom: -16px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 8px;
+  border-style: solid;
+  border-color: var(--wood-dark) transparent transparent transparent;
+}
+
+.speech-bubble::before {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 6px;
+  border-style: solid;
+  border-color: var(--parchment-bg) transparent transparent transparent;
+  z-index: 11;
+}
+
+/* Thinking Indicator Above Head */
+.thinking-bubble {
+  position: absolute;
+  bottom: 200px;
+  background: white;
+  border: 3px solid #333;
+  border-radius: 20px;
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  animation: floatBubble 2.5s ease-in-out infinite;
+  z-index: 10;
+}
+
+.thinking-bubble .dot {
+  width: 6px;
+  height: 6px;
+  background: #333;
+  border-radius: 50%;
+  animation: dotBlink 1.4s infinite both;
+}
+
+.thinking-bubble .dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.thinking-bubble .dot:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+.thinking-bubble::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 4px;
+  border-style: solid;
+  border-color: #333 transparent transparent transparent;
+}
+
+/* RPG Chat Interface Container */
+.rpg-chat {
+  background-color: #17181f;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* Scrollable Dialogue Log */
+.dialogue-log {
+  height: 220px;
+  background-color: var(--parchment-bg);
+  border: 6px solid var(--wood-light);
+  border-radius: 4px;
+  padding: 15px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
+  scrollbar-width: thin;
+  scrollbar-color: var(--wood-dark) var(--parchment-bg);
+}
+
+.dialogue-log::-webkit-scrollbar {
+  width: 8px;
+}
+
+.dialogue-log::-webkit-scrollbar-track {
+  background: var(--parchment-bg);
+}
+
+.dialogue-log::-webkit-scrollbar-thumb {
+  background-color: var(--wood-dark);
+  border-radius: 4px;
+}
+
+/* Individual Message Styles */
+.message {
+  font-size: 0.95rem;
+  line-height: 1.4;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  animation: messageFadeIn 0.3s ease-out;
+}
+
+.message.user {
+  align-items: flex-end;
+}
+
+.message.assistant {
+  align-items: flex-start;
+}
+
+.message-sender {
+  font-size: 0.75rem;
+  font-family: 'Press Start 2P', cursive;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+}
+
+.message.user .message-sender {
+  color: #4682b4;
+}
+
+.message.assistant .message-sender {
+  color: #8b4513;
+}
+
+.message-text {
+  padding: 10px 14px;
+  border-radius: 8px;
+  max-width: 85%;
+  word-wrap: break-word;
+}
+
+.message.user .message-text {
+  background-color: #d2e4f0;
+  color: #1a365d;
+  border-bottom-right-radius: 2px;
+}
+
+.message.assistant .message-text {
+  background-color: #eedc82;
+  color: var(--parchment-text);
+  border-top-left-radius: 2px;
+  font-weight: 500;
+}
+
+/* Chat Input Bar Form */
+.chat-input-form {
+  display: flex;
+  gap: 10px;
+}
+
+.chat-input {
+  flex: 1;
+  background-color: #262833;
+  border: 3px solid var(--wood-light);
+  border-radius: 4px;
+  padding: 12px 16px;
+  color: var(--text-light);
+  font-size: 1rem;
+  font-family: 'Outfit', sans-serif;
+  outline: none;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+}
+
+.chat-input:focus {
+  border-color: var(--gold-accent);
+  box-shadow: 0 0 8px var(--gold-glow);
+}
+
+.chat-input::placeholder {
+  color: var(--text-muted);
+}
+
+/* General Fantasy Button Styling */
+.btn-fantasy {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #fff;
+  background: linear-gradient(135deg, var(--wood-light) 0%, var(--wood-dark) 100%);
+  border: 3px solid var(--wood-border);
+  border-radius: 4px;
+  padding: 10px 20px;
+  cursor: pointer;
+  outline: none;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition:
+    transform 0.1s,
+    box-shadow 0.2s,
+    filter 0.2s;
+}
+
+.btn-fantasy:hover:not(:disabled) {
+  filter: brightness(1.15);
+  box-shadow: 0 0 10px rgba(121, 85, 72, 0.4);
+}
+
+.btn-fantasy:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+.btn-fantasy:disabled {
+  filter: grayscale(1) brightness(0.7);
+  cursor: not-allowed;
+}
+
+.btn-reset {
+  background: linear-gradient(135deg, #7b1fa2 0%, #4a148c 100%);
+  border-color: #8e24aa;
+}
+
+.btn-reset:hover:not(:disabled) {
+  box-shadow: 0 0 10px rgba(142, 36, 170, 0.4);
+}
+
+/* Layout Controls Bar */
+.controls-bar {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0 20px 20px 20px;
+  background-color: #17181f;
+}
+
+/* Floating Animations */
+@keyframes floatBubble {
+  0% {
+    transform: translateY(0px) translateX(-50%);
+  }
+  50% {
+    transform: translateY(-6px) translateX(-50%);
+  }
+  100% {
+    transform: translateY(0px) translateX(-50%);
+  }
+}
+
+@keyframes dotBlink {
+  0%,
+  80%,
+  100% {
+    transform: scale(0);
+  }
+  40% {
+    transform: scale(1);
+  }
+}
+
+@keyframes messageFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
